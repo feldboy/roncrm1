@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Dict, Any
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
@@ -40,6 +40,7 @@ async def lifespan(app: FastAPI):
     
     # Initialize agent registry and start core agents
     from ..agents.base.registry import AgentRegistry
+    from .websocket import start_periodic_broadcaster
     
     registry = AgentRegistry()
     
@@ -48,6 +49,9 @@ async def lifespan(app: FastAPI):
     
     # Store registry in app state
     app.state.agent_registry = registry
+    
+    # Start WebSocket periodic broadcaster
+    start_periodic_broadcaster()
     
     logger.info("AI CRM API server started successfully")
     
@@ -150,6 +154,13 @@ def create_app() -> FastAPI:
             return await registry.get_system_status()
         else:
             return {"error": "Agent registry not available"}
+    
+    # WebSocket endpoint
+    @app.websocket("/ws")
+    async def websocket_endpoint(websocket: WebSocket):
+        """WebSocket endpoint for real-time communication."""
+        from .websocket import websocket_endpoint as ws_handler
+        await ws_handler(websocket)
     
     # Include API routes
     app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])

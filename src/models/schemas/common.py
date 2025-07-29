@@ -68,7 +68,7 @@ class PaginationParams(BaseSchema):
     
     sort_order: Optional[str] = Field(
         default="asc",
-        regex="^(asc|desc)$",
+        pattern="^(asc|desc)$",
         description="Sort order (asc or desc)",
     )
 
@@ -178,14 +178,14 @@ class Address(BaseSchema):
     state: Optional[str] = Field(
         default=None,
         max_length=2,
-        regex="^[A-Z]{2}$",
+        pattern="^[A-Z]{2}$",
         description="State abbreviation (e.g., CA, NY)",
     )
     
     zip_code: Optional[str] = Field(
         default=None,
         max_length=10,
-        regex="^[0-9]{5}(-[0-9]{4})?$",
+        pattern="^[0-9]{5}(-[0-9]{4})?$",
         description="ZIP code (12345 or 12345-6789)",
     )
     
@@ -208,14 +208,14 @@ class ContactInfo(BaseSchema):
     phone: Optional[str] = Field(
         default=None,
         max_length=20,
-        regex="^\\+?[1-9]\\d{1,14}$",
+        pattern="^\\+?[1-9]\\d{1,14}$",
         description="Phone number in E.164 format",
     )
     
     secondary_phone: Optional[str] = Field(
         default=None,
         max_length=20,
-        regex="^\\+?[1-9]\\d{1,14}$",
+        pattern="^\\+?[1-9]\\d{1,14}$",
         description="Secondary phone number",
     )
 
@@ -400,7 +400,7 @@ class ExportParams(BaseSchema):
     
     format: str = Field(
         ...,
-        regex="^(csv|json|xlsx|pdf)$",
+        pattern="^(csv|json|xlsx|pdf)$",
         description="Export format",
     )
     

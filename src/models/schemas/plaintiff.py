@@ -61,7 +61,7 @@ class PlaintiffBase(BaseSchema):
     
     date_of_birth: Optional[str] = Field(
         default=None,
-        regex="^\\d{4}-\\d{2}-\\d{2}$",
+        pattern="^\\d{4}-\\d{2}-\\d{2}$",
         description="Date of birth in YYYY-MM-DD format",
     )
     
@@ -87,14 +87,14 @@ class PlaintiffBase(BaseSchema):
     state: Optional[str] = Field(
         default=None,
         max_length=2,
-        regex="^[A-Z]{2}$",
+        pattern="^[A-Z]{2}$",
         description="State abbreviation",
     )
     
     zip_code: Optional[str] = Field(
         default=None,
         max_length=10,
-        regex="^[0-9]{5}(-[0-9]{4})?$",
+        pattern="^[0-9]{5}(-[0-9]{4})?$",
         description="ZIP code",
     )
     
@@ -122,7 +122,7 @@ class PlaintiffBase(BaseSchema):
     
     incident_date: Optional[str] = Field(
         default=None,
-        regex="^\\d{4}-\\d{2}-\\d{2}$",
+        pattern="^\\d{4}-\\d{2}-\\d{2}$",
         description="Date of the incident in YYYY-MM-DD format",
     )
     
@@ -226,7 +226,7 @@ class PlaintiffCreate(PlaintiffBase):
     # SSN only for creation (encrypted storage)
     social_security_number: Optional[str] = Field(
         default=None,
-        regex="^\\d{3}-\\d{2}-\\d{4}$",
+        pattern="^\\d{3}-\\d{2}-\\d{4}$",
         description="Social Security Number in XXX-XX-XXXX format",
     )
 
@@ -273,7 +273,7 @@ class PlaintiffUpdate(BaseSchema):
     
     date_of_birth: Optional[str] = Field(
         default=None,
-        regex="^\\d{4}-\\d{2}-\\d{2}$",
+        pattern="^\\d{4}-\\d{2}-\\d{2}$",
         description="Date of birth in YYYY-MM-DD format",
     )
     
@@ -299,14 +299,14 @@ class PlaintiffUpdate(BaseSchema):
     state: Optional[str] = Field(
         default=None,
         max_length=2,
-        regex="^[A-Z]{2}$",
+        pattern="^[A-Z]{2}$",
         description="State abbreviation",
     )
     
     zip_code: Optional[str] = Field(
         default=None,
         max_length=10,
-        regex="^[0-9]{5}(-[0-9]{4})?$",
+        pattern="^[0-9]{5}(-[0-9]{4})?$",
         description="ZIP code",
     )
     
@@ -327,7 +327,7 @@ class PlaintiffUpdate(BaseSchema):
     
     incident_date: Optional[str] = Field(
         default=None,
-        regex="^\\d{4}-\\d{2}-\\d{2}$",
+        pattern="^\\d{4}-\\d{2}-\\d{2}$",
         description="Date of the incident",
     )
     
