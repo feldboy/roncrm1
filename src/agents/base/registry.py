@@ -353,6 +353,20 @@ class AgentRegistry:
         """
         return len(self.get_healthy_agents_by_type(agent_type)) > 0
     
+    async def get_system_status(self) -> Dict:
+        """
+        Get the current system status including all agents.
+        
+        Returns:
+            dict: System status information.
+        """
+        return {
+            "system_status": "healthy" if self._running else "stopped",
+            "agents": self.list_agents(),
+            "stats": self.get_registry_stats(),
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+    
     async def scale_agents(self, agent_type: AgentType, target_count: int) -> None:
         """
         Scale agents of a specific type to the target count.

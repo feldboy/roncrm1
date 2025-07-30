@@ -9,6 +9,7 @@ from .document import Document, DocumentType, DocumentStatus, DocumentSecurity
 from .communication import Communication, CommunicationType, CommunicationDirection, CommunicationStatus, Priority
 from .contract import Contract, ContractType, ContractStatus, SignatureStatus
 from .audit_log import AuditLog, ActionType, EntityType, LogLevel
+from .settings import Setting, SettingsCategory, UserSetting, AgentSetting, SettingAuditLog, SettingsProfile
 
 __all__ = [
     # Base classes
@@ -27,6 +28,12 @@ __all__ = [
     "Communication",
     "Contract",
     "AuditLog",
+    "Setting",
+    "SettingsCategory", 
+    "UserSetting",
+    "AgentSetting",
+    "SettingAuditLog",
+    "SettingsProfile",
     
     # Enums
     "CaseType",

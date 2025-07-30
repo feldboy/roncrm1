@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
-import { api } from '@/services/api'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { api } from '../../services/api'
+import { settingsService } from '../../services/settingsService'
 import toast from 'react-hot-toast'
-import { PlayIcon, PauseIcon, StopIcon, CogIcon } from '@heroicons/react/24/outline'
+import { PlayIcon, PauseIcon, StopIcon, CogIcon, ChartBarIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
 interface AgentSettingsProps {
   settings: any
@@ -11,32 +12,70 @@ interface AgentSettingsProps {
 
 export function AgentSettings({ settings, onUpdate }: AgentSettingsProps) {
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
+  const queryClient = useQueryClient()
 
   const { data: agents, isLoading, refetch } = useQuery(
     'agent-settings',
-    () => api.get('/agents/settings').then(res => res.data)
+    () => settingsService.getAgentSettings(),
+    {
+      retry: false,
+      onError: (error) => {
+        console.log('Agent settings query failed, using fallback:', error)
+      }
+    }
   )
 
-  const handleAgentAction = async (agentId: string, action: 'start' | 'stop' | 'restart') => {
-    try {
-      await api.post(`/agents/${agentId}/${action}`)
-      toast.success(`Agent ${action}ed successfully`)
-      refetch()
-      onUpdate()
-    } catch (error) {
-      console.error(`Failed to ${action} agent:`, error)
+  const { data: agentStatus } = useQuery(
+    'agent-status',
+    () => api.get('/agents/status').then(res => res.data),
+    { 
+      refetchInterval: 5000, // Refresh every 5 seconds
+      retry: false,
+      onError: (error) => {
+        console.log('Agent status query failed:', error)
+      }
     }
+  )
+
+  const agentActionMutation = useMutation(
+    async ({ agentId, action }: { agentId: string; action: 'start' | 'stop' | 'restart' }) => {
+      return api.post(`/api/v1/agents/${agentId}/${action}`)
+    },
+    {
+      onSuccess: (_, variables) => {
+        toast.success(`Agent ${variables.action}ed successfully`)
+        queryClient.invalidateQueries('agent-settings')
+        queryClient.invalidateQueries('agent-status')
+        onUpdate()
+      },
+      onError: (error: any, variables) => {
+        toast.error(`Failed to ${variables.action} agent: ${error.response?.data?.detail || error.message}`)
+      }
+    }
+  )
+
+  const handleAgentAction = (agentId: string, action: 'start' | 'stop' | 'restart') => {
+    agentActionMutation.mutate({ agentId, action })
   }
 
-  const handleConfigUpdate = async (agentId: string, config: any) => {
-    try {
-      await api.put(`/agents/${agentId}/config`, config)
-      toast.success('Agent configuration updated')
-      refetch()
-      onUpdate()
-    } catch (error) {
-      console.error('Failed to update agent config:', error)
+  const configUpdateMutation = useMutation(
+    async ({ agentType, settingKey, config }: { agentType: string; settingKey: string; config: any }) => {
+      return api.put(`/api/v1/settings/agents/${agentType}/${settingKey}`, config)
+    },
+    {
+      onSuccess: () => {
+        toast.success('Agent configuration updated successfully')
+        queryClient.invalidateQueries('agent-settings')
+        onUpdate()
+      },
+      onError: (error: any) => {
+        toast.error(`Failed to update configuration: ${error.response?.data?.detail || error.message}`)
+      }
     }
+  )
+
+  const handleConfigUpdate = (agentType: string, settingKey: string, config: any) => {
+    configUpdateMutation.mutate({ agentType, settingKey, config })
   }
 
   const getStatusColor = (status: string) => {

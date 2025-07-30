@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from 'react-query'
-import { api } from '@/services/api'
-import { DocumentUpload } from '@/components/documents/DocumentUpload'
-import { DocumentList } from '@/components/documents/DocumentList'
-import { DocumentPreview } from '@/components/documents/DocumentPreview'
+import { api } from '../services/api'
+import { DocumentUpload } from '../components/documents/DocumentUpload'
+import { DocumentList } from '../components/documents/DocumentList'
+import { DocumentPreview } from '../components/documents/DocumentPreview'
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 
 export function DocumentsPage() {
@@ -32,22 +32,17 @@ export function DocumentsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Documents</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Upload and manage case documents with AI processing
-          </p>
-        </div>
+      <div>
+        <h1 className="page-heading">Document Center</h1>
+        <p className="page-subtitle">
+          Upload and manage case documents
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="card p-6">
-            <div className="flex items-center space-x-3 mb-4">
-              <CloudArrowUpIcon className="h-6 w-6 text-primary-600" />
-              <h2 className="text-lg font-medium text-gray-900">Upload Documents</h2>
-            </div>
+            <h2 className="section-heading mb-4">Upload New Document</h2>
             <DocumentUpload onUploadSuccess={handleUploadSuccess} />
           </div>
 

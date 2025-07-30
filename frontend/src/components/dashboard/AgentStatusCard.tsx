@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { wsService } from '@/services/websocket'
+import { wsService } from '../../services/websocket'
 
 interface Agent {
   id: string

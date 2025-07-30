@@ -1,29 +1,104 @@
 import { useState } from 'react'
-import { useQuery } from 'react-query'
-import { api } from '@/services/api'
-import { SystemSettings } from '@/components/settings/SystemSettings'
-import { UserSettings } from '@/components/settings/UserSettings'
-import { AgentSettings } from '@/components/settings/AgentSettings'
-import { IntegrationSettings } from '@/components/settings/IntegrationSettings'
-import { CogIcon, UserIcon, BeakerIcon, LinkIcon } from '@heroicons/react/24/outline'
+import { useQuery, useQueryClient } from 'react-query'
+import { settingsService } from '../services/settingsService'
+import { SystemSettings } from '../components/settings/SystemSettings'
+import { UserSettings } from '../components/settings/UserSettings'
+import { AgentSettings } from '../components/settings/AgentSettings'
+import { IntegrationSettings } from '../components/settings/IntegrationSettings'
+import { CogIcon, UserIcon, BeakerIcon, LinkIcon, ArrowPathIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import toast from 'react-hot-toast'
 
 export function SettingsPage() {
   const [activeTab, setActiveTab] = useState('system')
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const queryClient = useQueryClient()
 
-  const { data: settings, isLoading, refetch } = useQuery(
-    'settings',
-    () => api.get('/settings').then(res => res.data)
+  const { data: categories, isLoading, refetch } = useQuery(
+    'settings-categories',
+    () => settingsService.getCategories(),
+    {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+      retry: 1, // Only retry once
+      retryDelay: 1000, // Wait 1 second before retry
+      onError: (error) => {
+        console.log('Settings categories query failed, using fallback data:', error)
+      },
+      // Provide fallback data when query fails
+      placeholderData: [
+        {
+          id: 1,
+          name: "system",
+          display_name: "System Settings",
+          description: "Core system configuration and performance settings",
+          icon: "cog",
+          sort_order: 1,
+          is_active: true,
+          settings: []
+        },
+        {
+          id: 2,
+          name: "agents",
+          display_name: "Agent Management", 
+          description: "AI agent configuration and control settings",
+          icon: "beaker",
+          sort_order: 2,
+          is_active: true,
+          settings: []
+        }
+      ]
+    }
   )
 
-  const tabs = [
-    { id: 'system', name: 'System', icon: CogIcon },
-    { id: 'user', name: 'User', icon: UserIcon },
-    { id: 'agents', name: 'Agents', icon: BeakerIcon },
-    { id: 'integrations', name: 'Integrations', icon: LinkIcon },
+  // Generate tabs from available categories or use defaults
+  const tabs = categories?.length ? categories.map(category => ({
+    id: category.name,
+    name: category.display_name,
+    icon: getIconForCategory(category.icon || category.name),
+    description: category.description
+  })) : [
+    { id: 'system', name: 'System', icon: CogIcon, description: 'System configuration and performance settings' },
+    { id: 'user', name: 'User', icon: UserIcon, description: 'User preferences and account settings' },
+    { id: 'agents', name: 'Agents', icon: BeakerIcon, description: 'AI agent configuration and management' },
+    { id: 'integrations', name: 'Integrations', icon: LinkIcon, description: 'Third-party service integrations' },
   ]
+
+  function getIconForCategory(iconName: string) {
+    const iconMap: Record<string, any> = {
+      'cog': CogIcon,
+      'system': CogIcon,
+      'user': UserIcon,
+      'profile': UserIcon,
+      'agents': BeakerIcon,
+      'beaker': BeakerIcon,
+      'integrations': LinkIcon,
+      'link': LinkIcon,
+    }
+    return iconMap[iconName.toLowerCase()] || CogIcon
+  }
 
   const handleSettingsUpdate = () => {
     refetch()
+    queryClient.invalidateQueries(['settings-category', activeTab])
+    queryClient.invalidateQueries('agent-settings')
+  }
+
+  const handleResetToDefaults = async () => {
+    try {
+      await settingsService.resetToDefaults(activeTab)
+      toast.success(`${activeTab} settings reset to defaults`)
+      handleSettingsUpdate()
+      setShowResetConfirm(false)
+    } catch (error: any) {
+      toast.error(`Failed to reset settings: ${error.response?.data?.detail || error.message}`)
+    }
+  }
+
+  const handleRefreshSettings = () => {
+    queryClient.invalidateQueries('settings-categories')
+    queryClient.invalidateQueries(['settings-category', activeTab])
+    queryClient.invalidateQueries('agent-settings')
+    toast.success('Settings refreshed')
   }
 
   return (
@@ -69,25 +144,25 @@ export function SettingsPage() {
             <>
               {activeTab === 'system' && (
                 <SystemSettings
-                  settings={settings?.system}
+                  settings={categories?.find(cat => cat.name === 'system')}
                   onUpdate={handleSettingsUpdate}
                 />
               )}
               {activeTab === 'user' && (
                 <UserSettings
-                  settings={settings?.user}
+                  settings={categories?.find(cat => cat.name === 'user')}
                   onUpdate={handleSettingsUpdate}
                 />
               )}
               {activeTab === 'agents' && (
                 <AgentSettings
-                  settings={settings?.agents}
+                  settings={categories?.find(cat => cat.name === 'agents')}
                   onUpdate={handleSettingsUpdate}
                 />
               )}
               {activeTab === 'integrations' && (
                 <IntegrationSettings
-                  settings={settings?.integrations}
+                  settings={categories?.find(cat => cat.name === 'integrations')}
                   onUpdate={handleSettingsUpdate}
                 />
               )}
@@ -98,3 +173,5 @@ export function SettingsPage() {
     </div>
   )
 }
+
+// Fixed: Removed all settings references, added error handling - v2

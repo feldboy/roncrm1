@@ -27,6 +27,7 @@ from .routes import (
     reports,
     webhooks,
 )
+from .routes import settings_simple as settings_routes
 
 logger = get_logger(__name__)
 settings = get_settings()
@@ -44,8 +45,8 @@ async def lifespan(app: FastAPI):
     
     registry = AgentRegistry()
     
-    # Start core agents
-    await registry.start_core_agents()
+    # Start monitoring
+    await registry.start_monitoring()
     
     # Store registry in app state
     app.state.agent_registry = registry
@@ -62,7 +63,7 @@ async def lifespan(app: FastAPI):
     
     # Stop all agents
     if hasattr(app.state, 'agent_registry'):
-        await app.state.agent_registry.shutdown_all_agents()
+        await app.state.agent_registry.stop_all_agents()
     
     logger.info("AI CRM API server shutdown complete")
 
@@ -172,6 +173,7 @@ def create_app() -> FastAPI:
     app.include_router(agents.router, prefix="/api/v1/agents", tags=["Agents"])
     app.include_router(reports.router, prefix="/api/v1/reports", tags=["Reports"])
     app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
+    app.include_router(settings_routes.router, prefix="/api/v1/settings", tags=["Settings"])
     
     return app
 

@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { api } from '@/services/api'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { settingsService } from '../../services/settingsService'
 import toast from 'react-hot-toast'
 
 interface SystemSettingsProps {
@@ -10,32 +11,80 @@ interface SystemSettingsProps {
 
 export function SystemSettings({ settings, onUpdate }: SystemSettingsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const queryClient = useQueryClient()
+
+  const { data: systemSettings, isLoading } = useQuery(
+    'system-settings',
+    () => settingsService.getCategorySettings('system'),
+    { 
+      enabled: !settings, // Only fetch if settings not provided
+      retry: false, // Don't retry on failure
+      onError: (error) => {
+        console.log('System settings query failed, using fallback:', error)
+      }
+    }
+  )
+
+  const settingsData = settings || systemSettings
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isDirty },
-  } = useForm({
-    defaultValues: {
-      log_level: settings?.log_level || 'INFO',
-      max_concurrent_tasks: settings?.max_concurrent_tasks || 10,
-      task_timeout: settings?.task_timeout || 300,
-      enable_metrics: settings?.enable_metrics || true,
-      enable_health_checks: settings?.enable_health_checks || true,
-      cleanup_logs_after_days: settings?.cleanup_logs_after_days || 30,
-      enable_auto_backup: settings?.enable_auto_backup || true,
-      backup_retention_days: settings?.backup_retention_days || 7,
+  } = useForm()
+
+  // Update form when settings data changes
+  useEffect(() => {
+    if (settingsData?.settings) {
+      const formValues: any = {}
+      settingsData.settings.forEach((setting: any) => {
+        formValues[setting.key] = setting.value
+      })
+      reset(formValues)
+    }
+  }, [settingsData, reset])
+
+  const updateSettingMutation = useMutation(
+    async ({ settingId, value, changeReason }: { settingId: number; value: any; changeReason?: string }) => {
+      return api.put(`/api/v1/settings/setting/${settingId}`, {
+        value,
+        change_reason: changeReason
+      })
     },
-  })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('system-settings')
+        onUpdate()
+      },
+      onError: (error: any) => {
+        toast.error(`Failed to update setting: ${error.response?.data?.detail || error.message}`)
+      }
+    }
+  )
 
   const onSubmit = async (data: any) => {
+    if (!settingsData?.settings) return
+    
     setIsSubmitting(true)
     try {
-      await api.put('/settings/system', data)
+      const updatePromises = settingsData.settings.map((setting: any) => {
+        const newValue = data[setting.key]
+        if (newValue !== setting.value) {
+          return updateSettingMutation.mutateAsync({
+            settingId: setting.id,
+            value: newValue,
+            changeReason: 'Bulk system settings update'
+          })
+        }
+        return Promise.resolve()
+      })
+      
+      await Promise.all(updatePromises)
       toast.success('System settings updated successfully')
-      onUpdate()
     } catch (error) {
       console.error('Failed to update settings:', error)
+      toast.error('Failed to update some settings')
     } finally {
       setIsSubmitting(false)
     }
@@ -47,6 +96,30 @@ export function SystemSettings({ settings, onUpdate }: SystemSettingsProps) {
     { value: 'WARNING', label: 'Warning' },
     { value: 'ERROR', label: 'Error' },
   ]
+
+  if (isLoading && !settingsData) {
+    return (
+      <div className="animate-pulse space-y-6">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="space-y-4">
+            <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (!settingsData?.settings) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">No system settings available</p>
+      </div>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

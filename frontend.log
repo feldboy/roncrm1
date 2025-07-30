@@ -920,3 +920,68 @@ AggregateError [ECONNREFUSED]:
     at internalConnectMultiple (node:net:1134:18)
     at afterConnectMultiple (node:net:1715:7)
 7:51:09 AM [vite] hmr update /src/components/communications/CommunicationComposer.tsx, /src/index.css
+8:13:16 AM [vite] page reload tailwind.config.js
+8:13:23 AM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+8:13:28 AM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+8:13:44 AM [vite] hmr update /src/index.css
+8:13:52 AM [vite] hmr update /src/components/layout/Header.tsx, /src/index.css
+8:14:00 AM [vite] hmr update /src/components/layout/Header.tsx, /src/index.css
+8:14:10 AM [vite] hmr update /src/components/dashboard/StatsCard.tsx, /src/index.css
+8:14:20 AM [vite] hmr update /src/components/dashboard/StatsCard.tsx, /src/index.css
+8:14:33 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:15:10 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:15:18 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:16:15 AM [vite] hmr update /src/pages/DocumentsPage.tsx, /src/index.css
+8:16:20 AM [vite] hmr update /src/pages/DocumentsPage.tsx, /src/index.css
+8:16:28 AM [vite] hmr update /src/App.tsx, /src/index.css
+8:16:33 AM [vite] hmr update /src/App.tsx, /src/index.css
+8:16:38 AM [vite] hmr update /src/components/layout/Header.tsx, /src/index.css
+8:16:42 AM [vite] hmr update /src/pages/DocumentsPage.tsx, /src/index.css
+8:16:47 AM [vite] hmr update /src/pages/DocumentsPage.tsx, /src/index.css
+8:16:52 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:16:56 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:41:34 AM [vite] hmr update /src/pages/PlaintiffsPage.tsx, /src/index.css
+8:41:40 AM [vite] hmr update /src/pages/PlaintiffsPage.tsx, /src/index.css
+8:42:00 AM [vite] hmr update /src/pages/PlaintiffsPage.tsx, /src/index.css
+8:42:06 AM [vite] hmr update /src/pages/PlaintiffsPage.tsx, /src/index.css
+8:42:12 AM [vite] hmr update /src/pages/LawFirmsPage.tsx, /src/index.css
+8:42:18 AM [vite] hmr update /src/pages/LawFirmsPage.tsx, /src/index.css
+8:42:34 AM [vite] hmr update /src/pages/LawFirmsPage.tsx, /src/index.css
+8:42:40 AM [vite] hmr update /src/pages/LawFirmsPage.tsx, /src/index.css
+8:45:27 AM [vite] hmr update /src/components/dashboard/AgentStatusCard.tsx, /src/index.css
+8:45:35 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:45:41 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:45:52 AM [vite] hmr update /src/pages/DashboardPage.tsx, /src/index.css
+8:45:58 AM [vite] hmr update /src/components/forms/NewCaseForm.tsx, /src/index.css
+8:46:08 AM [vite] hmr update /src/components/forms/NewCaseForm.tsx, /src/index.css
+8:46:13 AM [vite] hmr update /src/components/forms/NewLawFirmForm.tsx, /src/index.css
+8:46:18 AM [vite] hmr update /src/components/forms/NewLawFirmForm.tsx, /src/index.css
+12:00:19 PM [vite] hmr update /src/components/settings/AgentSettings.tsx, /src/index.css
+12:00:39 PM [vite] hmr update /src/components/settings/SystemSettings.tsx, /src/index.css
+12:02:22 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
+12:07:37 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:07:41 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:07:46 PM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+12:07:51 PM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+12:07:59 PM [vite] page reload src/main.tsx
+12:08:13 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:08:19 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:08:24 PM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+12:08:29 PM [vite] hmr update /src/components/layout/Sidebar.tsx, /src/index.css
+12:08:52 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
+12:09:01 PM [vite] hmr update /src/components/settings/SystemSettings.tsx, /src/index.css
+12:09:07 PM [vite] hmr update /src/components/settings/AgentSettings.tsx, /src/index.css
+12:12:49 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
+12:13:45 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx
+12:13:53 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx
+12:14:04 PM [vite] hmr update /src/components/settings/SystemSettings.tsx, /src/index.css
+12:14:08 PM [vite] hmr update /src/components/settings/SystemSettings.tsx, /src/index.css
+12:14:15 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx, /src/components/settings/SystemSettings.tsx
+12:14:21 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx, /src/components/settings/SystemSettings.tsx
+12:16:05 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
+12:16:12 PM [vite] hmr update /src/components/settings/SystemSettings.tsx, /src/index.css
+12:16:19 PM [vite] hmr update /src/components/settings/AgentSettings.tsx, /src/index.css
+12:16:26 PM [vite] hmr update /src/components/settings/AgentSettings.tsx, /src/index.css
+12:16:44 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:16:50 PM [vite] hmr update /src/App.tsx, /src/index.css
+12:17:00 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
