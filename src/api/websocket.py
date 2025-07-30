@@ -367,10 +367,26 @@ async def periodic_status_broadcaster():
             logger.error(f"Error in periodic status broadcaster: {e}")
             await asyncio.sleep(30)
 
+# Global task reference for broadcaster
+_broadcaster_task = None
+
 # Start the periodic broadcaster
 def start_periodic_broadcaster():
     """Start the background task for periodic status updates."""
-    asyncio.create_task(periodic_status_broadcaster())
+    global _broadcaster_task
+    _broadcaster_task = asyncio.create_task(periodic_status_broadcaster())
+
+
+def stop_periodic_broadcaster():
+    """Stop the periodic broadcaster task."""
+    global _broadcaster_task
+    if _broadcaster_task and not _broadcaster_task.done():
+        _broadcaster_task.cancel()
+
+async def authenticate_websocket(token: str) -> Optional[Dict[str, Any]]:
+    """Authenticate WebSocket connection using JWT token."""
+    return await get_current_user_from_token(token)
+
 
 # Export for use in main app
 __all__ = [
@@ -379,5 +395,7 @@ __all__ = [
     'broadcast_agent_update',
     'broadcast_task_update', 
     'broadcast_system_notification',
-    'start_periodic_broadcaster'
+    'start_periodic_broadcaster',
+    'stop_periodic_broadcaster',
+    'authenticate_websocket'
 ]

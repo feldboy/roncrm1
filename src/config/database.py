@@ -1,6 +1,6 @@
 """Database configuration and connection management."""
 
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Optional, Union
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,7 +12,7 @@ from .settings import get_settings
 Base = declarative_base()
 
 # Global database session factory
-async_session_factory: async_sessionmaker[AsyncSession] | None = None
+async_session_factory: Optional[async_sessionmaker[AsyncSession]] = None
 
 
 def get_database_url() -> str:
@@ -26,7 +26,7 @@ def get_database_url() -> str:
     return settings.database.url
 
 
-def create_database_engine(url: str | None = None):
+def create_database_engine(url: Optional[str] = None):
     """
     Create the SQLAlchemy async engine.
     

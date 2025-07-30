@@ -10,6 +10,11 @@ from ...utils.logging import get_logger
 logger = get_logger(__name__)
 settings = get_settings()
 
+
+class OpenAIError(Exception):
+    """Custom exception for OpenAI API errors."""
+    pass
+
 class OpenAIClient:
     """OpenAI API client with async support and error handling."""
     

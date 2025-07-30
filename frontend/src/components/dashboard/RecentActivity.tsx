@@ -2,12 +2,27 @@ import { useQuery } from 'react-query'
 import { api } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
 
+interface Activity {
+  id: number
+  type: string
+  message: string
+  timestamp: string
+  user: string
+  details?: string
+}
+
+interface ActivitiesResponse {
+  activities: Activity[]
+}
+
 export function RecentActivity() {
-  const { data: activities, isLoading } = useQuery(
+  const { data: activitiesResponse, isLoading } = useQuery<ActivitiesResponse>(
     'recent-activity',
     () => api.get('/activity/recent').then(res => res.data),
     { refetchInterval: 30000 }
   )
+
+  const activities = activitiesResponse?.activities || []
 
   if (isLoading) {
     return (
@@ -61,7 +76,7 @@ export function RecentActivity() {
       <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h2>
       <div className="flow-root">
         <ul className="-mb-8">
-          {activities?.map((activity: any, index: number) => (
+          {activities.map((activity: Activity, index: number) => (
             <li key={activity.id}>
               <div className="relative pb-8">
                 {index !== activities.length - 1 && (
@@ -78,7 +93,7 @@ export function RecentActivity() {
                   </div>
                   <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                     <div>
-                      <p className="text-sm text-gray-900">{activity.description}</p>
+                      <p className="text-sm text-gray-900">{activity.message}</p>
                       {activity.details && (
                         <p className="text-xs text-gray-500 mt-1">{activity.details}</p>
                       )}
@@ -96,7 +111,7 @@ export function RecentActivity() {
         </ul>
       </div>
       
-      {(!activities || activities.length === 0) && (
+      {activities.length === 0 && (
         <div className="text-center py-8">
           <p className="text-sm text-gray-500">No recent activity</p>
         </div>

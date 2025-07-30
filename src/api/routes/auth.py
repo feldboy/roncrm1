@@ -129,7 +129,7 @@ async def login(request: LoginRequest) -> LoginResponse:
         return LoginResponse(
             access_token=access_token,
             refresh_token=refresh_token,
-            expires_in=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            expires_in=settings.security.access_token_expire_minutes * 60,
             user=user_data,
         )
         
@@ -166,7 +166,7 @@ async def refresh_token(request: RefreshTokenRequest) -> RefreshTokenResponse:
         
         return RefreshTokenResponse(
             access_token=new_access_token,
-            expires_in=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            expires_in=settings.security.access_token_expire_minutes * 60,
         )
         
     except HTTPException:

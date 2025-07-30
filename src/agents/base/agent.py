@@ -85,6 +85,17 @@ class HealthStatus(enum.Enum):
     OFFLINE = "offline"
 
 
+class AgentStatus(enum.Enum):
+    """Enumeration of agent statuses."""
+    
+    INITIALIZING = "initializing"
+    READY = "ready"
+    RUNNING = "running"
+    PAUSED = "paused"
+    STOPPED = "stopped"
+    ERROR = "error"
+
+
 class AgentTask(BaseModel):
     """Standardized task format for inter-agent communication."""
     

@@ -1,0 +1,5 @@
+INFO:     Will watch for changes in these directories: ['/Users/yaronfeldboy/Documents/roncrm1']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [98015] using WatchFiles
+ERROR:    Error loading ASGI app. Attribute "app" not found in module "src.api.app".
+INFO:     Stopping reloader process [98015]

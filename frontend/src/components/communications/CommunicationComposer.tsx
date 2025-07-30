@@ -54,7 +54,6 @@ export function CommunicationComposer({ template, onSent, onCancel }: Communicat
   })
 
   const watchedContent = watch('content')
-  const currentType = watch('type')
 
   useEffect(() => {
     if (template) {
@@ -174,8 +173,8 @@ export function CommunicationComposer({ template, onSent, onCancel }: Communicat
             className="input"
             placeholder="Email subject"
           />
-          {errors.subject && (
-            <p className="mt-1 text-sm text-red-600">{errors.subject.message}</p>
+          {errors.subject && communicationType === 'email' && (
+            <p className="mt-1 text-sm text-red-600">{(errors.subject as any)?.message}</p>
           )}
         </div>
       )}

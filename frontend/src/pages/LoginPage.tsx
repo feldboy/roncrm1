@@ -20,8 +20,21 @@ export function LoginPage() {
     try {
       await login(email, password)
       toast.success('Login successful')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login failed:', error)
+      
+      // More specific error handling
+      if (error.response?.status === 401) {
+        toast.error('Invalid email or password')
+      } else if (error.response?.status >= 500) {
+        toast.error('Server error. Please try again later.')
+      } else if (error.response?.data?.detail) {
+        toast.error(error.response.data.detail)
+      } else if (error.message) {
+        toast.error(error.message)
+      } else {
+        toast.error('Login failed. Please try again.')
+      }
     } finally {
       setIsSubmitting(false)
     }

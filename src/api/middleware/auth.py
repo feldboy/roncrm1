@@ -90,8 +90,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             try:
                 payload = jwt.decode(
                     token,
-                    settings.JWT_SECRET_KEY,
-                    algorithms=[settings.JWT_ALGORITHM]
+                    settings.security.secret_key,
+                    algorithms=[settings.security.algorithm]
                 )
                 
                 # Check token expiration
@@ -167,7 +167,7 @@ class JWTManager:
                 expire = datetime.utcnow() + expires_delta
             else:
                 expire = datetime.utcnow() + timedelta(
-                    minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+                    minutes=settings.security.access_token_expire_minutes
                 )
             
             payload = {
@@ -184,8 +184,8 @@ class JWTManager:
             
             token = jwt.encode(
                 payload,
-                settings.JWT_SECRET_KEY,
-                algorithm=settings.JWT_ALGORITHM
+                settings.security.secret_key,
+                algorithm=settings.security.algorithm
             )
             
             return token
@@ -199,7 +199,7 @@ class JWTManager:
         """Create JWT refresh token."""
         try:
             expire = datetime.utcnow() + timedelta(
-                days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS
+                days=settings.security.refresh_token_expire_days
             )
             
             payload = {
@@ -211,8 +211,8 @@ class JWTManager:
             
             token = jwt.encode(
                 payload,
-                settings.JWT_SECRET_KEY,
-                algorithm=settings.JWT_ALGORITHM
+                settings.security.secret_key,
+                algorithm=settings.security.algorithm
             )
             
             return token
@@ -227,8 +227,8 @@ class JWTManager:
         try:
             payload = jwt.decode(
                 token,
-                settings.JWT_SECRET_KEY,
-                algorithms=[settings.JWT_ALGORITHM]
+                settings.security.secret_key,
+                algorithms=[settings.security.algorithm]
             )
             
             return {
