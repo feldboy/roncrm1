@@ -70,7 +70,7 @@ export interface SettingsProfile {
 
 // Settings API Service
 export class SettingsService {
-  private baseUrl = '/api/v1/settings'
+  private baseUrl = '/settings'
 
   /**
    * Get all settings categories with their settings

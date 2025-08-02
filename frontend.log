@@ -985,3 +985,32 @@ AggregateError [ECONNREFUSED]:
 12:16:44 PM [vite] hmr update /src/App.tsx, /src/index.css
 12:16:50 PM [vite] hmr update /src/App.tsx, /src/index.css
 12:17:00 PM [vite] hmr update /src/pages/SettingsPage.tsx, /src/index.css
+5:52:27 PM [vite] http proxy error at /api/v1/api/v1/settings/agents:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:27 PM [vite] http proxy error at /api/v1/agents/status:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:51 PM [vite] http proxy error at /api/v1/plaintiffs:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:51 PM [vite] http proxy error at /api/v1/agents/status:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:51 PM [vite] http proxy error at /api/v1/cases/dashboard-stats:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:52 PM [vite] http proxy error at /api/v1/agents/status:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:52:52 PM [vite] http proxy error at /api/v1/cases/dashboard-stats:
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+5:53:30 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx, /src/components/settings/SystemSettings.tsx, /src/components/settings/AgentSettings.tsx
