@@ -135,10 +135,10 @@ export function PlaintiffsPage() {
             <div className="flex justify-between items-start mb-4">
               <div className="flex space-x-3">
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStageColor(plaintiff.case_status)}`}>
-                  {plaintiff.case_status.replace('_', ' ')}
+                  {plaintiff.case_status?.replace('_', ' ') || 'Unknown Status'}
                 </span>
                 <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800">
-                  {plaintiff.case_type.replace('_', ' ')}
+                  {plaintiff.case_type?.replace('_', ' ') || 'Unknown Type'}
                 </span>
               </div>
               <button className="text-gray-400 hover:text-gray-600">

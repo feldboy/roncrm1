@@ -13,6 +13,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# In-memory storage for demo purposes
+cases_storage = []
+case_id_counter = 1
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -182,8 +186,8 @@ async def get_cases_dashboard_stats():
 async def get_cases():
     """Get cases list."""
     return {
-        "cases": [],
-        "total": 0,
+        "cases": cases_storage,
+        "total": len(cases_storage),
         "page": 1,
         "per_page": 20
     }
@@ -191,10 +195,12 @@ async def get_cases():
 @app.post("/api/v1/cases")
 async def create_case(case_data: dict):
     """Create a new case."""
-    # Simulate creating a case with a new ID
+    global case_id_counter
+    
+    # Create a new case with incremented ID
     new_case = {
-        "id": 12345,
-        "case_number": f"CASE-{datetime.utcnow().strftime('%Y%m%d')}-001",
+        "id": case_id_counter,
+        "case_number": f"CASE-{datetime.utcnow().strftime('%Y%m%d')}-{case_id_counter:03d}",
         "plaintiff_name": case_data.get("plaintiff_name", ""),
         "status": case_data.get("status", "pending"),
         "case_type": case_data.get("case_type", "personal_injury"),
@@ -203,6 +209,11 @@ async def create_case(case_data: dict):
         "created_at": datetime.utcnow().isoformat(),
         "updated_at": datetime.utcnow().isoformat()
     }
+    
+    # Store the case and increment counter
+    cases_storage.append(new_case)
+    case_id_counter += 1
+    
     return new_case
 
 @app.get("/api/v1/communications")

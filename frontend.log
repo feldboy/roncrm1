@@ -1014,3 +1014,4 @@ AggregateError [ECONNREFUSED]:
     at internalConnectMultiple (node:net:1134:18)
     at afterConnectMultiple (node:net:1715:7)
 5:53:30 PM [vite] hmr update /src/index.css, /src/pages/SettingsPage.tsx, /src/components/settings/SystemSettings.tsx, /src/components/settings/AgentSettings.tsx
+12:51:56 PM [vite] hmr update /src/pages/PlaintiffsPage.tsx, /src/index.css
